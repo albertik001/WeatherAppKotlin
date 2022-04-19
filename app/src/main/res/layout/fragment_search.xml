@@ -5,5 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.fragment.weather.searchcity.SearchFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/barlow"
+        android:text="OLOLO"
+        android:textColor="@color/black"
+        android:textSize="48dp" />
 
 </FrameLayout>

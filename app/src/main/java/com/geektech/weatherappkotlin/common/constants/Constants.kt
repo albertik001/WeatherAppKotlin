@@ -5,4 +5,5 @@ object Constants {
     const val WEATHER_FETCH= "/data/2.5/weather"
     const val API_KEY = "f4094b2bcf523dcedd8d8ece45efc459"
     const val UNITS = "metric"
+
 }

@@ -33,7 +33,6 @@ class WeatherFragment :
             lifecycleScope.launch {
                 viewModel.weatherState.observe(viewLifecycleOwner) {
                     networkBind(it)
-                    Log.e("TAG", "initObservers: ")
                 }
             }
         }
@@ -42,7 +41,8 @@ class WeatherFragment :
     @SuppressLint("SetTextI18n")
     private fun networkBind(mainResponse: MainResponse) {
         //FORMAT DATA
-        val mBarFormat = NumberFormat.getNumberInstance(Locale.US).format(mainResponse.main.pressure)
+        val mBarFormat =
+            NumberFormat.getNumberInstance(Locale.US).format(mainResponse.main.pressure)
         val simpleDateFormat = SimpleDateFormat("HH:mm a", Locale.ROOT)
         val simpleDateFormats = SimpleDateFormat("HH:mm 'PM'", Locale.ROOT)
         val dayTime = SimpleDateFormat("HH'h' m'm'", Locale.ROOT)
@@ -55,18 +55,18 @@ class WeatherFragment :
         //END
         binding.apply {
             statusImage.loadWithGlide(urlImg)
-            nameCountry.setText(mainResponse.sys.country + "," + mainResponse.name)
+            nameCountry.text = mainResponse.sys.country + "," + mainResponse.name
             bigTemperature.text = mainResponse.main.temp.toString()
             percentHumidity.text = mainResponse.main.humidity.toString() + "%"
             mBarNumber.text = mBarFormat + "mBar"
             kmh.text = mainResponse.wind.speed.toString() + "km/h"
-            binding.timeSunrise.text = timeSunrise
-            binding.timeSunset.text = timeSunset
-            binding.timeDaytime.text = timeDaytime
+            timesSunrise.text = timeSunrise
+            timesSunset.text = timeSunset
+            timesDaytime.text = timeDaytime
             smallTemperature.text = mainResponse.main.tempMax.toString()
             smallTemperatureBottom.text = mainResponse.main.tempMin.toString()
             textTime.text = realTime
-            Log.e("TAG", "initObservers: ")
+
         }
     }
 
