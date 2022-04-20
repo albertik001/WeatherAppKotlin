@@ -1,14 +1,17 @@
 package com.geektech.weatherappkotlin.presentation.ui.fragment.weather
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.geektech.weatherappkotlin.R
 import com.geektech.weatherappkotlin.base.BaseFragment
 import com.geektech.weatherappkotlin.common.extensions.isInternetAvailable
 import com.geektech.weatherappkotlin.common.extensions.loadWithGlide
+import com.geektech.weatherappkotlin.common.extensions.navigateSafely
+import com.geektech.weatherappkotlin.common.resource.Resource
 import com.geektech.weatherappkotlin.data.remote.dto.MainResponse
 import com.geektech.weatherappkotlin.databinding.FragmentWeatherBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +26,10 @@ class WeatherFragment :
     override val binding by viewBinding(FragmentWeatherBinding::bind)
     override val viewModel: WeatherViewModel by viewModels()
 
+    override fun initViews() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.interFace.visibility = View.INVISIBLE
+    }
 
     override fun sendRequest() {
         viewModel.fetchWeather("Bishkek")
@@ -51,7 +58,7 @@ class WeatherFragment :
         val timeSunrise = simpleDateFormat.format(mainResponse.sys.sunrise).toString()
         val timeSunset = simpleDateFormats.format(mainResponse.sys.sunset).toString()
         val timeDaytime = dayTime.format(mainResponse.dt).toString()
-        val urlImg = "https://openweathermap.org/img/wn/" + mainResponse.weather[0].icon + ".png"
+        val urlImg = getString(R.string.uri_status_image) + mainResponse.weather[0].icon + ".png"
         //END
         binding.apply {
             statusImage.loadWithGlide(urlImg)
@@ -66,10 +73,16 @@ class WeatherFragment :
             smallTemperature.text = mainResponse.main.tempMax.toString()
             smallTemperatureBottom.text = mainResponse.main.tempMin.toString()
             textTime.text = realTime
-
+            binding.progressBar.visibility = View.INVISIBLE
+            binding.interFace.visibility = View.VISIBLE
         }
     }
 
     override fun initListeners() {
+        /*binding.nameCountry.setOnClickListener {
+            findNavController().navigateSafely(
+                R.id.searchFragment
+            )
+        }*/
     }
 }

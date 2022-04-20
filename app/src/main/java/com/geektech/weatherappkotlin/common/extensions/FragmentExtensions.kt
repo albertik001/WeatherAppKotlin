@@ -11,7 +11,6 @@ fun Fragment.isInternetAvailable(context: Context?): Boolean {
     val capabilities =
         connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
     if (capabilities != null) {
-
         when {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
                 return true
