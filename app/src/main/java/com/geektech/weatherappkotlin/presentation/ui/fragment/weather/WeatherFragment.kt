@@ -1,17 +1,14 @@
 package com.geektech.weatherappkotlin.presentation.ui.fragment.weather
 
 import android.annotation.SuppressLint
-import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.geektech.weatherappkotlin.R
 import com.geektech.weatherappkotlin.base.BaseFragment
 import com.geektech.weatherappkotlin.common.extensions.isInternetAvailable
 import com.geektech.weatherappkotlin.common.extensions.loadWithGlide
-import com.geektech.weatherappkotlin.common.extensions.navigateSafely
-import com.geektech.weatherappkotlin.common.resource.Resource
 import com.geektech.weatherappkotlin.data.remote.dto.MainResponse
 import com.geektech.weatherappkotlin.databinding.FragmentWeatherBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,27 +24,28 @@ class WeatherFragment :
     override val viewModel: WeatherViewModel by viewModels()
 
     override fun initViews() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.interFace.visibility = View.INVISIBLE
+        binding.progressBar.isVisible = true
+        binding.interFace.isVisible = false
     }
 
     override fun sendRequest() {
-        viewModel.fetchWeather("Bishkek")
+
+        if (isInternetAvailable(requireContext())) {
+            viewModel.fetchWeather("Bishkek")
+        }
     }
 
     override fun initObservers() {
-        if (isInternetAvailable(requireContext())) {
-            lifecycleScope.launch {
-                viewModel.weatherState.observe(viewLifecycleOwner) {
-                    networkBind(it)
-                }
+        lifecycleScope.launch {
+            viewModel.weatherState.observe(viewLifecycleOwner) {
+                networkBind(it)
             }
         }
     }
 
+
     @SuppressLint("SetTextI18n")
     private fun networkBind(mainResponse: MainResponse) {
-        //FORMAT DATA
         val mBarFormat =
             NumberFormat.getNumberInstance(Locale.US).format(mainResponse.main.pressure)
         val simpleDateFormat = SimpleDateFormat("HH:mm a", Locale.ROOT)
@@ -59,7 +57,6 @@ class WeatherFragment :
         val timeSunset = simpleDateFormats.format(mainResponse.sys.sunset).toString()
         val timeDaytime = dayTime.format(mainResponse.dt).toString()
         val urlImg = getString(R.string.uri_status_image) + mainResponse.weather[0].icon + ".png"
-        //END
         binding.apply {
             statusImage.loadWithGlide(urlImg)
             nameCountry.text = mainResponse.sys.country + "," + mainResponse.name
@@ -73,8 +70,8 @@ class WeatherFragment :
             smallTemperature.text = mainResponse.main.tempMax.toString()
             smallTemperatureBottom.text = mainResponse.main.tempMin.toString()
             textTime.text = realTime
-            binding.progressBar.visibility = View.INVISIBLE
-            binding.interFace.visibility = View.VISIBLE
+            binding.progressBar.isVisible = false
+            binding.interFace.isVisible = true
         }
     }
 
