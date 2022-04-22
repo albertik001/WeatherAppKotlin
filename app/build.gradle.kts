@@ -1,29 +1,28 @@
 plugins {
-
     // Application
     id("com.android.application")
 
     // Kotlin
-    id("kotlin-android")
+    kotlin("android")
 
     // Kapt
-    id("kotlin-kapt")
+    kotlin("kapt")
 
     // Navigation SafeArgs
-    id("androidx.navigation.safeargs.kotlin")
+    id(Dependencies.Navigation.safeArgsPlugin)
 
     // Hilt
-    id("com.google.dagger.hilt.android")
+    id(Dependencies.Hilt.plugin)
 
 }
 
 android {
-    compileSdk = 32
+    compileSdk = AndroidConfig.compileSdk
 
     defaultConfig {
-        applicationId = "com.geektech.weatherappkotlin"
-        minSdk = 23
-        targetSdk = 32
+        applicationId = "com.geektech.dotaapp"
+        minSdk = AndroidConfig.minSdk
+        targetSdk = AndroidConfig.targetSdk
         versionCode = 1
         versionName = "1.0"
 
@@ -37,9 +36,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
-//        getByName("debug") {
-//            buildConfigField("url", "BASE_URL", "https://kitsu.io/api/edge/")
-//        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -48,64 +44,65 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    packagingOptions {
-        resources.pickFirsts.add("META-INF/*")
-        resources.excludes.add("META-INF/DEPENDENCIES")
-        resources.excludes.add("META-INF/LICENSE")
-        resources.excludes.add("META-INF/LICENSE.txt")
-        resources.excludes.add("META-INF/license.txt")
-        resources.excludes.add("META-INF/NOTICE")
-        resources.excludes.add("META-INF/NOTICE.txt")
-        resources.excludes.add("META-INF/notice.txt")
-        resources.excludes.add("META-INF/ASL2.0")
-        resources.excludes.add("META-INF/*")
-    }
     //ViewBinding
     buildFeatures.viewBinding = true
 }
 
 dependencies {
+
     // UI Components
-    implementation(libs.bundles.uiComponents)
+    implementation(Dependencies.UIComponents.appCompat)
+    implementation(Dependencies.UIComponents.material)
+    implementation(Dependencies.UIComponents.constraintLayout)
+    implementation(Dependencies.UIComponents.viewBindingPropertyDelegate)
 
     // Core
-    implementation(libs.android.core)
+    implementation(Dependencies.Core.core)
 
     // Activity
-    implementation(libs.activity.activity)
+    implementation(Dependencies.Activity.activity)
 
     // Fragment
-    implementation(libs.fragment.fragment)
+    implementation(Dependencies.Fragment.fragment)
 
     // Lifecycle
-    implementation(libs.bundles.lifecycleBundle)
+    implementation(Dependencies.Lifecycle.runtime)
+    implementation(Dependencies.Lifecycle.viewModel)
+    implementation(Dependencies.Lifecycle.liveData)
 
     // Navigation
-    implementation(libs.bundles.navigationBundle)
+    implementation(Dependencies.Navigation.fragment)
+    implementation(Dependencies.Navigation.ui)
 
     // Retrofit
-    implementation(libs.bundles.retrofitBundle)
+    implementation(Dependencies.Retrofit.retrofit)
+    implementation(Dependencies.Retrofit.converterGson)
 
     // OkHttpClient
-    implementation("com.squareup.okhttp3:logging-interceptor")
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation(libs.okHttp.bom)
+
+    implementation(Dependencies.OkHttp.loggingInterceptor)
+    implementation(Dependencies.OkHttp.okHttp)
+    implementation(Dependencies.OkHttp.bom)
 
     // Hilt
-    implementation(libs.hilt.hilt)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    kapt(libs.hilt.compiler)
+    implementation(Dependencies.Hilt.android)
+    kapt(Dependencies.Hilt.compiler)
+    // Koin
+    implementation(Dependencies.Koin.koinAndroid)
 
     // Legacy Support
-    implementation(libs.legacySupport.legacySupport)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // Glide
-    implementation(libs.glide.glide)
+    implementation(Dependencies.Glide.glide)
+
 
     // SplashScreen
-    implementation(libs.ui.splashScreen)
+    implementation(Dependencies.SplashScreen.splashScreen)
 
-    // Room
-    implementation(libs.bundles.roomBundle)
-    kapt(libs.room.compiler)
+    // Room with coroutines
+    implementation(Dependencies.Room.runtime)
+    implementation(Dependencies.Room.supportKotlinExtensionsAndCoroutines)
+    kapt(Dependencies.Room.compiler)
+
 }
