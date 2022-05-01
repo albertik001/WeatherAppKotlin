@@ -49,6 +49,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
     // UI Components
     implementation(Dependencies.UIComponents.appCompat)
@@ -74,15 +76,6 @@ dependencies {
     implementation(Dependencies.Navigation.fragment)
     implementation(Dependencies.Navigation.ui)
 
-    // Retrofit
-    implementation(Dependencies.Retrofit.retrofit)
-    implementation(Dependencies.Retrofit.converterGson)
-
-    // OkHttpClient
-
-    implementation(Dependencies.OkHttp.loggingInterceptor)
-    implementation(Dependencies.OkHttp.okHttp)
-    implementation(Dependencies.OkHttp.bom)
 
     // Hilt
     implementation(Dependencies.Hilt.android)
@@ -100,9 +93,6 @@ dependencies {
     // SplashScreen
     implementation(Dependencies.SplashScreen.splashScreen)
 
-    // Room with coroutines
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Room.supportKotlinExtensionsAndCoroutines)
-    kapt(Dependencies.Room.compiler)
+
 
 }

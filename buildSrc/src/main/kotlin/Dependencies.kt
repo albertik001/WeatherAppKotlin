@@ -6,8 +6,11 @@ object Dependencies {
     }
 
     object Kotlin {
+        const val version = "1.6.1"
 
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
+        const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
 
         object KSP {
             const val ksp = "com.google.devtools.ksp"
@@ -106,7 +109,7 @@ object Dependencies {
         const val version = "com.google.firebase:firebase-firestore-ktx"
         const val analytics = "com.google.firebase:firebase-analytics-ktx"
         const val platform = "com.google.firebase:firebase-bom:29.2.0"
-        const val auth =    "com.google.firebase:firebase-auth-ktx"
+        const val auth = "com.google.firebase:firebase-auth-ktx"
         const val googleServices = "com.google.gms.google-services"
         const val services = "com.google.gms:google-services"
     }

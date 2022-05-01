@@ -3,7 +3,6 @@ package com.geektech.weatherappkotlin.presentation.ui.fragment.weather
 import com.geektech.weatherappkotlin.base.BaseViewModel
 import com.geektech.weatherappkotlin.domain.useCases.FetchWeatherUseCase
 import com.geektech.weatherappkotlin.presentation.models.MainResponseUI
-import com.geektech.weatherappkotlin.presentation.models.toUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject

@@ -21,5 +21,4 @@ dependencyResolutionManagement {
 
 
 rootProject.name = "WeatherAppKotlin"
-include(":app")
-enableFeaturePreview("VERSION_CATALOGS")
+include(":app", ":data", ":domain")

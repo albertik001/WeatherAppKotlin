@@ -7,8 +7,8 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.geektech.weatherappkotlin.R
 import com.geektech.weatherappkotlin.base.BaseFragment
-import com.geektech.weatherappkotlin.common.extensions.isInternetAvailable
-import com.geektech.weatherappkotlin.common.extensions.loadWithGlide
+import com.geektech.weatherappkotlin.presentation.extensions.isInternetAvailable
+import com.geektech.weatherappkotlin.presentation.extensions.loadWithGlide
 import com.geektech.weatherappkotlin.databinding.FragmentWeatherBinding
 import com.geektech.weatherappkotlin.presentation.models.MainResponseUI
 import dagger.hilt.android.AndroidEntryPoint
