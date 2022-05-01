@@ -6,10 +6,10 @@
     app:startDestination="@id/weatherFragment">
 
     <fragment
-        tools:layout="@layout/fragment_weather"
         android:id="@+id/weatherFragment"
         android:name="com.geektech.weatherappkotlin.presentation.ui.fragment.weather.WeatherFragment"
-        android:label="WeatherFragment" />
+        android:label="WeatherFragment"
+        tools:layout="@layout/fragment_weather" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.geektech.weatherappkotlin.presentation.ui.fragment.weather.searchcity.SearchFragment"

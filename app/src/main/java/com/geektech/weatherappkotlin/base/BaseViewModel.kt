@@ -1,41 +1,32 @@
 package com.geektech.weatherappkotlin.base
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geektech.weatherappkotlin.common.resource.Resource
+import com.geektech.weatherappkotlin.domain.either.Either
+import com.geektech.weatherappkotlin.presentation.ui.state.UIState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected fun <T> Flow<Resource<T>>.gather(
-        state: MutableLiveData<T>,
-        addition: (() -> Unit)? = null
-    ) {
-        viewModelScope.launch {
-            collect {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.e("TAG", "gather: Loading...")
-                    }
-                    is Resource.Error -> {
-                        Log.e("gaypop", it.message.toString())
-                    }
-                    is Resource.Success -> {
-                        addition?.let {
-                            addition(
+    protected fun <T> mutableUiStateFlow() = MutableStateFlow<UIState<T>>(UIState.Idle())
 
-                            )
-                        }
-                        state.postValue(
-                            it.data
-                        )
-                    }
+    protected fun <T, S> Flow<Either<String, T>>.gatherRequest(
+        state: MutableStateFlow<UIState<S>>,
+        mappedData: (data: T) -> S
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            state.value = UIState.Loading()
+            this@gatherRequest.collect {
+                when (it) {
+                    is Either.Left -> state.value = UIState.Error(it.value)
+                    is Either.Right -> state.value = UIState.Success(mappedData(it.value))
                 }
             }
+
         }
     }
 }

@@ -26,5 +26,6 @@ class RetrofitClient {
         .client(okHttpClient)
         .build()
 
-    fun provideWeatherApiService(): WeatherApiService = retrofit.create(WeatherApiService::class.java)
+    fun provideWeatherApiService(): WeatherApiService =
+        retrofit.create(WeatherApiService::class.java)
 }

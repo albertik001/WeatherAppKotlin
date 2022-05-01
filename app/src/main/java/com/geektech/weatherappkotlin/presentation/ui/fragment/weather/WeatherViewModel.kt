@@ -1,19 +1,20 @@
 package com.geektech.weatherappkotlin.presentation.ui.fragment.weather
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.geektech.weatherappkotlin.base.BaseViewModel
-import com.geektech.weatherappkotlin.data.remote.dto.MainResponse
-import com.geektech.weatherappkotlin.data.remote.repositories.MainRepository
+import com.geektech.weatherappkotlin.domain.useCases.FetchWeatherUseCase
+import com.geektech.weatherappkotlin.presentation.models.MainResponseUI
+import com.geektech.weatherappkotlin.presentation.models.toUI
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val mainRepository: MainRepository
+    private val fetchWeatherUseCase: FetchWeatherUseCase
 ) : BaseViewModel() {
-    private val _weatherState = MutableLiveData<MainResponse>()
-    var weatherState: LiveData<MainResponse> = _weatherState
+    private val _weatherState = mutableUiStateFlow<MainResponseUI>()
+    var weatherState = _weatherState.asStateFlow()
 
-    fun fetchWeather(city:String) = mainRepository.fetchWeather(city).gather(_weatherState)
+    fun fetchWeather(city: String) =
+        fetchWeatherUseCase(city).gatherRequest(_weatherState) { it.toUI() }
 }

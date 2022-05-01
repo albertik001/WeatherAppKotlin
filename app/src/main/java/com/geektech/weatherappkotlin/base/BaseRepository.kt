@@ -1,46 +1,23 @@
 package com.geektech.weatherappkotlin.base
 
-import com.geektech.weatherappkotlin.common.resource.Resource
+import com.geektech.weatherappkotlin.domain.either.Either
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
+import kotlinx.coroutines.flow.flowOn
 
 abstract class BaseRepository {
-
     protected fun <T> sendRequest(
-        request: suspend () -> T,
-        saveToDatabase: suspend (data: T) -> Unit
-    ) = flow {
-        emit(Resource.Loading())
-        try {
-            request()?.let {
-                saveToDatabase(it)
-                emit(Resource.Success(it))
-            }
-        } catch (e: IOException) {
-            emit(
-                Resource.Error(null, e.localizedMessage ?: "An error occurred ! ")
-            )
-        } catch (httpException: HttpException) {
-            emit(
-                Resource.Error(
-                    null,
-                    httpException.localizedMessage ?: "An HttpException occurred!"
-                )
-            )
+        gatherIfSucceed: ((T) -> Unit)? = null,
+        request: suspend () -> T
+    ) = flow<Either<String, T>> {
+        request().also { data ->
+            gatherIfSucceed?.invoke(data)
+            emit(Either.Right(value = data))
         }
+
+    }.flowOn(Dispatchers.IO).catch { exception ->
+        emit(Either.Left(exception.localizedMessage ?: "An error occurred"))
+
     }
-
-    protected fun <T> sendRequest(request: suspend () -> T) = flow {
-
-        emit(Resource.Loading())
-        try {
-            emit(Resource.Success(data = request()))
-        } catch (e: IOException) {
-            emit(
-                Resource.Error(null, e.localizedMessage ?: "An error occurred!")
-            )
-        }
-    }
-
 }
